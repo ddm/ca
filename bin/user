@@ -7,11 +7,14 @@ set -e
 
 USER=$1
 ROOT=$2
-PASSWORD=${3:-$(dd if=/dev/urandom bs=8 count=1 2>/dev/null | base64 | sed 's/=//g')}
 
-openssl genrsa -passout pass:${PASSWORD} -aes256 -out ${USER}.key 4096 && chmod 600 ${USER}.key
+DAYS=${3:-365}
+BITS=${4:-4096}
+PASSWORD=${5:-$(dd if=/dev/urandom bs=8 count=1 2>/dev/null | base64 | sed 's/=//g')}
+
+openssl genrsa -passout pass:${PASSWORD} -aes256 -out ${USER}.key ${BITS} && chmod 600 ${USER}.key
 openssl req -passin pass:${PASSWORD} -subj "/O=${ROOT}/CN=${USER}" -new -sha256 -key ${USER}.key -out ${USER}.csr
-openssl x509 -passin pass:${PASSWORD} -req -days 365 -in ${USER}.csr -CA ${ROOT}.crt -CAkey ${ROOT}.key -CAcreateserial -CAserial ${ROOT}.seq -out ${USER}.crt
+openssl x509 -passin pass:${PASSWORD} -req -days ${DAYS} -in ${USER}.csr -CA ${ROOT}.crt -CAkey ${ROOT}.key -CAcreateserial -CAserial ${ROOT}.seq -out ${USER}.crt
 openssl pkcs12 -passin pass:${PASSWORD} -passout pass:${PASSWORD} -export -clcerts -in ${USER}.crt -inkey ${USER}.key -out ${USER}.p12
 openssl x509 -text -noout -in ${USER}.crt
 

@@ -8,8 +8,8 @@ set -e
 DOMAIN=$1
 ROOT=$2
 
-DAYS=${4:-365}
-BITS=${5:-4096}
+DAYS=${3:-365}
+BITS=${4:-4096}
 
 openssl genrsa -out ${DOMAIN}.key ${BITS} && chmod 600 ${DOMAIN}.key
 openssl req -subj "/O=${ROOT}/OU=${DOMAIN}/CN=${DOMAIN}" -new -sha256 -key ${DOMAIN}.key -out ${DOMAIN}.csr
