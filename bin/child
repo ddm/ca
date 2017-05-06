@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+set -e
+
+: ${1?Domain?}
+: ${2?Root?}
+
+DOMAIN=$1
+ROOT=$2
+
+DAYS=${4:-365}
+BITS=${5:-4096}
+
+openssl genrsa -out /tmp/${DOMAIN}.key ${BITS} && chmod 600 /tmp/${DOMAIN}.key
+openssl req -subj "/O=${ROOT}/OU=${DOMAIN}/CN=${DOMAIN}" -new -sha256 -key /tmp/${DOMAIN}.key -out /tmp/${DOMAIN}.csr
+openssl x509 -req -days ${DAYS} -in /tmp/${DOMAIN}.csr -CA /tmp/${ROOT}.crt -CAkey /tmp/${ROOT}.key -CAcreateserial -CAserial /tmp/${ROOT}.seq -out /tmp/${DOMAIN}.crt
+openssl x509 -text -noout -in /tmp/${DOMAIN}.crt
