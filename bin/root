@@ -13,5 +13,5 @@ LOCATION=$3
 DAYS=${4:-365}
 BITS=${5:-4096}
 
-openssl req -subj "/C=${COUNTRY}/L=${LOCATION}/CN=${DOMAIN}" -x509 -sha256 -nodes -days ${DAYS} -newkey rsa:${BITS} -keyout /tmp/${DOMAIN}.key -out /tmp/${DOMAIN}.crt && chmod 600 /tmp/${DOMAIN}.key
-openssl x509 -text -noout -in /tmp/${DOMAIN}.crt
+openssl req -subj "/C=${COUNTRY}/L=${LOCATION}/CN=${DOMAIN}" -x509 -sha256 -nodes -days ${DAYS} -newkey rsa:${BITS} -keyout ${DOMAIN}.key -out ${DOMAIN}.crt && chmod 600 ${DOMAIN}.key
+openssl x509 -text -noout -in ${DOMAIN}.crt
