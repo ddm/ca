@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+set -e
+
+: ${1?Domain?}
+: ${2?Email?}
+
+DOMAIN=$1
+EMAIL=$2
+
+certbot -d ${DOMAIN} -m ${EMAIL} --config-dir . --logs-dir . --work-dir . --standalone -n --agree-tos certonly
