@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+set -e
+
+openssl dhparam -out dhparams.pem 2048
+
