@@ -2,7 +2,7 @@
 
 set -e
 
-: ${1?User?}
+: ${1?CN?}
 : ${2?Root?}
 
 USER=$1

@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+set -e
+
+: ${1?CN?}
+
+DOMAIN=$1
+
+DAYS=${4:-365}
+BITS=${5:-4096}
+
+openssl req -subj "/CN=${DOMAIN}" -x509 -sha256 -nodes -days ${DAYS} -newkey rsa:${BITS} -keyout ${DOMAIN}.key -out ${DOMAIN}.crt && chmod 600 ${DOMAIN}.key
+openssl x509 -text -noout -in ${DOMAIN}.crt

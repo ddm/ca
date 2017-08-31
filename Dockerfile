@@ -7,10 +7,9 @@ RUN apk --no-cache update &&\
     rm -rf /var/cache/apk/ &&\
     adduser -D -u 1000 ca
 
-COPY bin/* /usr/bin/
+COPY bin/* /usr/local/bin/
 
 VOLUME /tmp
 WORKDIR /tmp
 
-# TODO Find a wait for bin/signed to bind port 443 without root
 USER ca
